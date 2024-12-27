@@ -15,7 +15,7 @@
                 margin: 0;
                 padding: 0;
                 font-family: Arial, sans-serif;
-                font-size: 20px; /* Readable font size */
+                font-size: 18px; /* Readable font size */
             }
             .receipt-content {
                 width: 45mm; /* Width of receipt paper */
@@ -55,9 +55,9 @@
         /* Optional styles for screen */
         body {
             font-family: Arial, sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             line-height: 1;
-            padding: 10px;
+            padding: 0px;
         }
         .receipt-content {
             width: 45mm;
