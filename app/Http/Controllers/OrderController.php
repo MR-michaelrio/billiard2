@@ -9,65 +9,74 @@ use App\Models\Produk;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class OrderController extends Controller
 {
     //
     public function store(Request $request)
     {
-        // Validasi data
-        $request->validate([
-            'id_table' => 'integer',
-            'items' => 'required|array',
-            'items.*.name' => 'required|string',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric|min:0',
-        ]);
-
-        // Buat order
-        Log::info('Order created', ['order_id' => $request->id_table]);
-
-        $order = Order::create([
-            'id_table' => $request->id_table,
-            'status' => 'lunas'
-        ]);
-
-        // Tambahkan items ke order dan kurangi stok produk
-        foreach ($request->items as $item) {
-            // Buat order item
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'metode' => "langsung"
+        try {
+            // Validasi data
+            $request->validate([
+                'id_table' => 'integer',
+                'items' => 'required|array',
+                'items.*.name' => 'required|string',
+                'items.*.quantity' => 'required|integer|min:1',
+                'items.*.price' => 'required|numeric|min:0',
             ]);
 
-            // Kurangi stok produk berdasarkan nama produk
-            $produk = Produk::where('nama_produk', $item['name'])->first();
-            if ($produk) {
-                // Log jumlah stok sebelum dikurangi
-                Log::info('Initial product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
+            // Buat order
+            Log::info('Order created', ['order_id' => $request->id_table]);
 
-                // Kurangi stok
-                $produk->qty -= $item['quantity'];
-                $produk->save();
+            $order = Order::create([
+                'id_table' => $request->id_table,
+                'status' => 'lunas'
+            ]);
 
-                // Log jumlah stok setelah dikurangi
-                Log::info('Updated product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
-            } else {
-                // Log jika produk tidak ditemukan
-                Log::error('Product not found', ['product' => $item['name']]);
+            // Tambahkan items ke order dan kurangi stok produk
+            foreach ($request->items as $item) {
+                // Buat order item
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_name' => $item['name'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'metode' => "langsung"
+                ]);
+
+                // Kurangi stok produk berdasarkan nama produk
+                $produk = Produk::where('nama_produk', $item['name'])->first();
+                if ($produk) {
+                    // Log jumlah stok sebelum dikurangi
+                    Log::info('Initial product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
+
+                    // Kurangi stok
+                    $produk->qty -= $item['quantity'];
+                    $produk->save();
+
+                    // Log jumlah stok setelah dikurangi
+                    Log::info('Updated product quantity', ['product' => $produk->nama_produk, 'qty' => $produk->qty]);
+                } else {
+                    // Log jika produk tidak ditemukan
+                    Log::error('Product not found', ['product' => $item['name']]);
+                }
             }
-        }
-        
-        $invoice = Invoice::create([
-            'id_belanja' => $order->id,
-            'user_id' => Auth::user()->id
-        ]);
-        // Calculate the total for all food items
+            
+            $invoice = Invoice::create([
+                'id_belanja' => $order->id,
+                'user_id' => Auth::user()->id
+            ]);
+            // Calculate the total for all food items
 
-        return response()->json(['success' => true, "order_id"=>$order->id, "invoice_id" => $invoice->id]);
+            return response()->json(['success' => true, "order_id"=>$order->id, "invoice_id" => $invoice->id], 201);
+        } catch (\Exception $e) {
+            Log::error('Error in store:', ['message' => $e->getMessage()]);
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500));
+        }
     }
 
 

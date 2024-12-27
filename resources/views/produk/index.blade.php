@@ -206,29 +206,26 @@
                         items: cartItems
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
+                .then(response => response.json()) // Tambahkan ini untuk memproses body respons ke JSON
+                .then((data) => {
                     document.getElementById('loading').style.display = 'none';
-                    console.log("datas: ", data)                        
+                    console.log("Response received:", data);
 
                     if (data.success) {
-                        showAlert('Order submitted successfully', 'success')
+                        showAlert('Order submitted successfully', 'success');
                         cartItems.length = 0;
-                        updateCart()
-                        console.log("order_id", data.order_id)   
-                        
-                                             
-                            // Redirect to print the receipt using id_rental
-                            const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id', 'invoice_id' => ':invoice_id']) }}`
-                                .replace(':order_id', data.order_id)
-                                .replace(':invoice_id', data.invoice_id);
+                        updateCart();
+                        console.log("order_id", data.order_id);
 
-                            if (data.order_id && data.invoice_id) {
-                                window.location.href = printUrl; // Redirect to the constructed URL
-                            } else {
-                                alert('Order ID atau Invoice ID tidak valid.');
-                            }
+                        const printUrl = `{{ route('print.strukorder', ['order_id' => ':order_id', 'invoice_id' => ':invoice_id']) }}`
+                            .replace(':order_id', data.order_id)
+                            .replace(':invoice_id', data.invoice_id);
 
+                        if (data.order_id && data.invoice_id) {
+                            window.location.href = printUrl;
+                        } else {
+                            alert('Order ID atau Invoice ID tidak valid.');
+                        }
                     } else {
                         alert('There was an error submitting the order');
                     }
@@ -237,10 +234,11 @@
                     console.error('Error:', error);
                     alert('There was an error submitting the order. Please check the console for more details.');
                 });
+
         });
 
         document.getElementById('save-button').addEventListener('click', function() {
-    // Show the spinner
+   
             document.getElementById('loading').style.display = 'flex';
 
             const idTable = document.getElementById('id_table').value;
