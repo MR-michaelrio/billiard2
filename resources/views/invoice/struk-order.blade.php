@@ -70,7 +70,7 @@
             margin-bottom: 10px;
         }
         .details{
-            margin-bottom: 10px;
+            margin-bottom: 10px !important;
         }
         .totals {
             margin-bottom: 3px;
