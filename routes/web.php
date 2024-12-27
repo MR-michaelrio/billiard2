@@ -98,3 +98,4 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //paket
     Route::resource('paket', PaketController::class);
 });
+Route::post('logout', [HomeController::class, 'logout'])->name('logout');
