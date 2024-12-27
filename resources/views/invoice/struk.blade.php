@@ -15,7 +15,7 @@
                 margin: 0;
                 padding: 0;
                 font-family: Arial, sans-serif;
-                font-size: 12px; /* Readable font size */
+                font-size: 18px; /* Readable font size */
             }
             .receipt-content {
                 width: 45mm; /* Width of receipt paper */
@@ -27,8 +27,11 @@
                 font-weight: bold;
                 margin-bottom: 10px;
             }
-            .details, .totals {
+            .details{
                 margin-bottom: 10px;
+            }
+            .totals {
+                margin-bottom: 3px;
             }
             .details span, .totals span {
                 display: block;
@@ -52,9 +55,9 @@
         /* Optional styles for screen */
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 18px;
             line-height: 1;
-            padding: 10px;
+            padding: 7px;
         }
         .receipt-content {
             width: 45mm;
@@ -66,11 +69,11 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
-        .details, .totals {
+        .details {
             margin-bottom: 10px;
         }
         .totals {
-            margin-top: 10px;
+            margin-top: 3px;
         }
         .details span, .totals span {
             display: block;
@@ -92,7 +95,7 @@
             text-align: right;
         }
         #data-idtable{
-            /* visibility: hidden; */
+            visibility: hidden;
         }
     </style>
 </head>
