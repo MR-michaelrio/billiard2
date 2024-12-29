@@ -55,7 +55,7 @@
         /* Optional styles for screen */
         body {
             font-family: Arial, sans-serif;
-            font-size: 15px;
+            font-size: 10px;
             line-height: 1;
             padding: 0px;
         }
