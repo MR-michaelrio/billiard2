@@ -31,7 +31,7 @@
                 margin-bottom: 10px;
             }
             .totals {
-                margin-bottom: 3px;
+                margin-bottom: 0px;
             }
             .details span, .totals span {
                 display: block;
@@ -73,7 +73,7 @@
             margin-bottom: 10px;
         }
         .totals {
-            margin-top: 3px;
+            margin-top: 0px;
         }
         .details span, .totals span {
             display: block;
