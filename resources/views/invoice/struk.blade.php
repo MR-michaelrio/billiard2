@@ -86,7 +86,7 @@
             border-collapse: collapse;
         }
         th, td {
-            padding: 5px 0;
+            padding: 0px 0px;
         }
         th {
             text-align: left;
@@ -102,7 +102,7 @@
 <body>
     <div class="receipt-content">
         <div class="header">
-            Eighty Nine Pool
+            Play And Break Billiard
             <div>Date: {{ $tanggalmain }}</div>
         </div>
         <!-- Info Section -->
