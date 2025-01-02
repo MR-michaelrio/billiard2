@@ -60,15 +60,8 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-auto" style="display: flex; align-items: center;">
-            <div class="kasir">
-                KASIR
-            </div>
-        </div>
         <div class="col">
-            <div class="row">
-                <!-- First row of tables -->
-                <!-- <div class="col-2"></div> -->
+            <!-- <div class="row">
                 @for ($i = 0; $i < 3; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
@@ -93,9 +86,7 @@
                     </div>
                 @endfor
             </div>
-
             <div class="row">
-                <!-- <div class="col-2"></div> -->
                 @for ($i = 3; $i < 7; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
@@ -120,9 +111,6 @@
                     </div>
                 @endfor
             </div>
-
-            <div class="divider"></div>
-
             <div class="row">
                 @for ($i = 7; $i < 15; $i++)
                     <div class="col-2 col-lg-3">
@@ -145,6 +133,31 @@
                             </div>
                         @endif
                     @endforeach
+                    </div>
+                @endfor
+            </div> -->
+            <div class="row">
+                @for ($i = 0; $i < 12; $i++)
+                    <div class="col-2 col-lg-3">
+                        @foreach($meja_rental as $index => $mi)
+                            @if($index == $i)
+                                <div class="card">
+                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
+                                        <div class="card-body">
+                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
+                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
+                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
+                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                                    Meja {{ $mi['nomor_meja'] }}
+                                            </div>
+                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
+                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                 @endfor
             </div>
