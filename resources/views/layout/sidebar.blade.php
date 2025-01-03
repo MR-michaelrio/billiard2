@@ -75,66 +75,66 @@
             </ul>
           </li>
           @if(Auth::check() && Auth::user()->role == "admin")
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('rekap.bulan')}}" class="nav-link">
-                  <i class="nav-icon fas fa-file"></i>
-                  <p>
-                    Rekap Bulanan
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('bl.rekap')}}" class="nav-link">
-                  <i class="nav-icon fas fa-file"></i>
-                  <p>
-                    Rekap Seluruh
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('member.index')}}" class="nav-link">
-                  <i class="nav-icon fas fa-users"></i>
-                  <p>
-                    Members
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('paket.index')}}" class="nav-link">
-                  <i class="nav-icon fas fa-box"></i>
-                  <p>
-                    Paket
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('harga.index')}}" class="nav-link">
-                  <i class="nav-icon fas fa-dollar-sign"></i>
-                  <p>
-                    Harga
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </li>
+            <li class="nav-item menu-open">
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('rekap.bulan')}}" class="nav-link">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>
+                      Rekap Bulanan
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('bl.rekap')}}" class="nav-link">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>
+                      Rekap Seluruh
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('member.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                      Members
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('paket.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-box"></i>
+                    <p>
+                      Paket
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('harga.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-dollar-sign"></i>
+                    <p>
+                      Harga
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
           @endif
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
