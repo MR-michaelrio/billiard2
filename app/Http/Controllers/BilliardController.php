@@ -71,24 +71,28 @@ class BilliardController extends Controller
 
                 // Initialize default per-minute pricing
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
-                $mejatotal = $total_minutes * $harga_per_menit; // Default to per-minute calculation
 
-                // Iterate through the packages to find the best pricing
-                $paket = Paket::orderBy('jam', 'asc')->get();
-                $best_price = null; // Default to null
-
-                foreach ($paket as $p) {
-                    // Convert package time ($p->jam) to minutes
-                    $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
-                    
-                    // Check if the input time (total_minutes) exceeds or is equal to the package time
-                    if ($total_minutes == $package_minutes) {
-                        $best_price = $p->harga; // Update the best price to this package's price
+                if (in_array($no_meja, [1, 2])) {
+                    // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
+                    $mejatotal = ($total_minutes / 60) * 60000;
+                } else {
+                    // Hitung harga berdasarkan per menit atau paket
+                    $mejatotal = $total_minutes * $harga_per_menit;
+            
+                    // Iterasi melalui paket untuk mendapatkan harga terbaik
+                    $paket = Paket::orderBy('jam', 'asc')->get();
+                    $best_price = null; // Default to calculated per-minute price
+                    foreach ($paket as $p) {
+                        // Convert package time ($p->jam) to minutes
+                        $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
+                        
+                        // Check if the input time (total_minutes) exceeds or is equal to the package time
+                        if ($total_minutes == $package_minutes) {
+                            $best_price = $p->harga; // Update the best price to this package's price
+                        }
                     }
+                    $mejatotal = $best_price !== null ? $best_price : $mejatotal;
                 }
-
-                // If we found a package price, use it, otherwise stick with the per-minute price
-                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
             }
 
             // Calculate the total for all food items
