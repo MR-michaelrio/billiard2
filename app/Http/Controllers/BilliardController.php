@@ -72,24 +72,37 @@ class BilliardController extends Controller
                 // Initialize default per-minute pricing
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
                // Cek jika meja adalah meja 1 atau 2
-                if (in_array($no_meja, [1, 2])) {
-                    // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
-                    $mejatotal = ($total_minutes / 60) * 60000;
-                } else {
-                    // Hitung harga berdasarkan per menit atau paket
-                    $mejatotal = $total_minutes * $harga_per_menit;
+                // if (in_array($no_meja, [1, 2])) {
+                //     // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
+                //     $mejatotal = ($total_minutes / 60) * 60000;
+                // } else {
+                //     // Hitung harga berdasarkan per menit atau paket
+                //     $mejatotal = $total_minutes * $harga_per_menit;
 
-                    // Iterasi melalui paket untuk mendapatkan harga terbaik
-                    $paket = Paket::orderBy('jam', 'asc')->get();
-                    $best_price = null; // Default to calculated per-minute price
-                    foreach ($paket as $p) {
-                        if ($lama_waktu == $p->jam) {
-                            $best_price = $p->harga;
-                            break;
-                        }
+                //     // Iterasi melalui paket untuk mendapatkan harga terbaik
+                //     $paket = Paket::orderBy('jam', 'asc')->get();
+                //     $best_price = null; // Default to calculated per-minute price
+                //     foreach ($paket as $p) {
+                //         if ($lama_waktu == $p->jam) {
+                //             $best_price = $p->harga;
+                //             break;
+                //         }
+                //     }
+                //     $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+                // }
+                // Hitung harga berdasarkan per menit atau paket
+                $mejatotal = $total_minutes * $harga_per_menit;
+
+                // Iterasi melalui paket untuk mendapatkan harga terbaik
+                $paket = Paket::orderBy('jam', 'asc')->get();
+                $best_price = null; // Default to calculated per-minute price
+                foreach ($paket as $p) {
+                    if ($lama_waktu == $p->jam) {
+                        $best_price = $p->harga;
+                        break;
                     }
-                    $mejatotal = $best_price !== null ? $best_price : $mejatotal;
                 }
+                $mejatotal = $best_price !== null ? $best_price : $mejatotal;
             }
 
             // Calculate the total for all food items
@@ -205,13 +218,26 @@ class BilliardController extends Controller
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
 
-                // Cek jika meja adalah meja 1 atau 2
-                if (in_array($no_meja, [1, 2])) {
-                    // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
-                    $mejatotal = ($total_minutes / 60) * 60000;
-                } else {
-                    // Hitung harga berdasarkan per menit atau paket
-                    $mejatotal = $total_minutes * $harga_per_menit;
+                // // Cek jika meja adalah meja 1 atau 2
+                // if (in_array($no_meja, [1, 2])) {
+                //     // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
+                //     $mejatotal = ($total_minutes / 60) * 60000;
+                // } else {
+                //     // Hitung harga berdasarkan per menit atau paket
+                //     $mejatotal = $total_minutes * $harga_per_menit;
+
+                //     // Iterasi melalui paket untuk mendapatkan harga terbaik
+                //     $paket = Paket::orderBy('jam', 'asc')->get();
+                //     $best_price = null; // Default to calculated per-minute price
+                //     foreach ($paket as $p) {
+                //         if ($lama_waktu == $p->jam) {
+                //             $best_price = $p->harga;
+                //             break;
+                //         }
+                //     }
+                //     $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+                // }
+                $mejatotal = $total_minutes * $harga_per_menit;
 
                     // Iterasi melalui paket untuk mendapatkan harga terbaik
                     $paket = Paket::orderBy('jam', 'asc')->get();
@@ -223,7 +249,6 @@ class BilliardController extends Controller
                         }
                     }
                     $mejatotal = $best_price !== null ? $best_price : $mejatotal;
-                }
             }
 
             // Total biaya keseluruhan
