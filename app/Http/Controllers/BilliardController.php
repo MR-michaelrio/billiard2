@@ -74,7 +74,7 @@ class BilliardController extends Controller
 
                 if (in_array($no_meja, [1, 2])) {
                     // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
-                    $mejatotal = ($total_minutes / 60) * 60000;
+                    $mejatotal = ($total_minutes / 60) * 50000;
                 } else {
                     // Hitung harga berdasarkan per menit atau paket
                     $mejatotal = $total_minutes * $harga_per_menit;
@@ -213,7 +213,7 @@ class BilliardController extends Controller
                 
                 if (in_array($no_meja, [1, 2])) {
                     // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
-                    $mejatotal = ($total_minutes / 60) * 60000;
+                    $mejatotal = ($total_minutes / 60) * 50000;
                 } else {
                     // Hitung harga berdasarkan per menit atau paket
                     $mejatotal = $total_minutes * $harga_per_menit;
