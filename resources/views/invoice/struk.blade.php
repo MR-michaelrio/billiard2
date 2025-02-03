@@ -57,10 +57,10 @@
             font-family: Arial, sans-serif;
             font-size: 12px;
             line-height: 1;
-            padding: 5px;
+            padding: 2px;
         }
         .receipt-content {
-            width: 53mm;
+            width: 50mm;
             margin: 0 auto;
             text-align: left;
         }
