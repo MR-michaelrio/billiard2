@@ -31,7 +31,7 @@
                 margin-bottom: 10px;
             }
             .totals {
-                margin-bottom: 0px;
+                margin-bottom: -10px;
             }
             .details span, .totals span {
                 display: block;
@@ -157,9 +157,9 @@
     </div>
 
     <!-- Optional Print Button for Testing -->
-    <!-- <div class="no-print">
+    <div class="no-print">
         <button onclick="window.print()">Print</button>
-    </div> -->
+    </div>
 
     <script>
         // Automatically trigger printing when the page loads
