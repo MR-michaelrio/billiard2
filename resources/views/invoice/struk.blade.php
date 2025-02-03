@@ -8,8 +8,8 @@
         /* Print-specific styles */
         @media print {
             @page {
-                size: 53mm auto; /* Fixed width, dynamic height */
-                margin: 5mm; /* Small margin */
+                size: 52mm auto; /* Fixed width, dynamic height */
+                margin: 0mm; /* Small margin */
             }
             body {
                 margin: 0;
@@ -18,7 +18,7 @@
                 font-size: 12px; /* Readable font size */
             }
             .receipt-content {
-                width: 53mm; /* Width of receipt paper */
+                width: 52mm; /* Width of receipt paper */
                 margin: 0 auto;
                 text-align: left;
             }
@@ -60,7 +60,7 @@
             padding: 0px;
         }
         .receipt-content {
-            width: 53mm;
+            width: 52mm;
             margin: 0 auto;
             text-align: left;
         }
