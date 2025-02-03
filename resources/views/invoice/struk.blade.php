@@ -31,7 +31,7 @@
                 margin-bottom: 10px;
             }
             .totals {
-                margin-bottom: -10px;
+                margin-bottom: -132.28346457px;
             }
             .details span, .totals span {
                 display: block;
