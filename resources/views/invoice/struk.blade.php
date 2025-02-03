@@ -9,7 +9,7 @@
         @media print {
             @page {
                 size: 52mm auto; /* Fixed width, dynamic height */
-                margin: 0mm; /* Small margin */
+                margin: 2mm; /* Small margin */
             }
             body {
                 margin: 0;
