@@ -150,6 +150,7 @@
 
         <!-- Totals Section -->
         <div class="totals">
+            <span class="total-label">Diskon: {{ number_format($diskon, 0, ',', '.') }}%</span>
             <span class="total-label">Total:</span>
             <span>{{ number_format($total, 0, ',', '.') }}</span>
         </div>

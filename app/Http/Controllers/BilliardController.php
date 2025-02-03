@@ -103,13 +103,15 @@ class BilliardController extends Controller
             });
 
             // Total biaya keseluruhan
-            $total = $mejatotal + $total_makanan;
+            $diskon = $meja_rental->diskon;
+            $totalmeja = $mejatotal - ($mejatotal * ( $diskon / 100));
+            $total = $totalmeja + $total_makanan;
             $total = round($total);
             $invoice->update([
                 "harga_table"=>$mejatotal,
                 "harga_cafe"=>$total_makanan
             ]);
-            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan',"tanggalmain"));
+            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan',"tanggalmain", "diskon"));
         } else {
             return redirect()->back()->with('error', 'No rental found for the specified table.');
         }
@@ -297,7 +299,8 @@ class BilliardController extends Controller
                 'waktu_mulai' => $waktu_mulai,
                 'waktu_akhir' => $waktu_akhir,
                 'no_meja' => $no_meja,
-                'metode' => $validated['metode']
+                'metode' => $validated['metode'],
+                'diskon' => $request->diskon,
             ]);
 
             // Update status 

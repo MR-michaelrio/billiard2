@@ -79,7 +79,9 @@
                                 </tr>
                                 <tr>
                                     <th>Diskon:</th>
-                                    <td><input type="text" name="diskon" id="" type="numberik"></td>
+                                    <td>
+                                        <input type="text" name="diskon" id="diskon">
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -114,7 +116,8 @@ document.querySelectorAll('.submit-button').forEach(button => {
         const nomeja = this.getAttribute('data-meja');
         const metode = this.getAttribute('data-metode');
         const lamaWaktu = document.getElementById('lama_waktu').textContent;
-
+        const diskon = document.getElementById('diskon').value;
+        console.log("diskon", diskon);
         console.log('Sending request with idRental:', nomeja, 'lamaWaktu:', lamaWaktu);
 
         fetch('{{ route("bl.bayar") }}', {
@@ -123,7 +126,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode: metode })
+            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode: metode, diskon:diskon })
         })
         .then(response => {
             console.log('Response status:', response.status);

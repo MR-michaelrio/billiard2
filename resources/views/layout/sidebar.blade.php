@@ -13,6 +13,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          @if(Auth::user()->role == "billiard")
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -25,7 +26,7 @@
               </li>
             </ul>
           </li>
-
+          @endif
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -62,6 +63,7 @@
               </li>
             </ul>
           </li>
+          @if(Auth::user()->role == "billiard")
           <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -74,6 +76,7 @@
               </li>
             </ul>
           </li>
+          @endif
           @if(Auth::check() && Auth::user()->role == "admin")
             <li class="nav-item menu-open">
               <ul class="nav nav-treeview">
