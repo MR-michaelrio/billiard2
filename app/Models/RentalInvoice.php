@@ -9,7 +9,7 @@ class RentalInvoice extends Model
 {
     use HasFactory;
     protected $table = 'rental_invoice';
-    protected $fillable = ['id_rental', 'lama_waktu', 'waktu_mulai', 'waktu_akhir', 'no_meja', 'metode'];
+    protected $fillable = ['id_rental', 'lama_waktu', 'waktu_mulai', 'waktu_akhir', 'no_meja', 'metode', 'diskon'];
     protected $casts = [
         'waktu_akhir' => 'datetime',
         'waktu_mulai' => 'datetime',

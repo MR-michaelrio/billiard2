@@ -126,7 +126,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode: metode, diskon:diskon })
+            body: JSON.stringify({ no_meja: nomeja, lama_waktu: lamaWaktu, metode: metode, diskon: diskon })
         })
         .then(response => {
             console.log('Response status:', response.status);
