@@ -77,6 +77,10 @@
                                     <th>Total:</th>
                                     <td>{{$total}}</td>
                                 </tr>
+                                <tr>
+                                    <th>Diskon:</th>
+                                    <td><input type="text" name="diskon" id="" type="numberik"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
