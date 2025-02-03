@@ -117,6 +117,97 @@ class BilliardController extends Controller
         }
     }
 
+    public function printrekap($id_rental)
+    {
+        // Fetch the main RentalInvoice record by ID
+        $meja_rental = RentalInvoice::where('id_rental', $id_rental)->first();
+        $invoice = Invoice::where('id_rental', $id_rental)->first();
+        $meja_rental2 = RentalInvoice::where('id_rental', $id_rental)->get();
+        $rental = RentalInvoice::where('id_rental', $id_rental)->count();
+        $no_meja = $meja_rental->no_meja;
+        $tanggalmain = Carbon::parse($meja_rental->waktu_akhir)->format('d-m-Y');
+
+        if ($meja_rental) {
+            // Make sure to use the correct id reference for Orders
+            $makanan = Order::where('id_table', $invoice->id_belanja)
+                            ->with('items')
+                            ->get();
+
+            $idplayer = substr($meja_rental->id_player, 0, 1);
+
+            if ($idplayer == 'M') {
+                $mejatotal = 0;
+                $lama_waktu = '00:00:00';
+            } else {
+                $hargarental = HargaRental::where('jenis', 'menit')->first();
+                $lama_waktu = $meja_rental->lama_waktu ?? '00:00:00'; // Correctly get the lama_waktu
+
+                // Handle case when elapsedSeconds is provided via query parameter
+                if (!$lama_waktu || $lama_waktu == '00:00:00') {
+                    $elapsedSeconds = request()->query('elapsed');
+
+                    if ($elapsedSeconds !== null) {
+                        $hours = floor($elapsedSeconds / 3600);
+                        $minutes = floor(($elapsedSeconds % 3600) / 60);
+                        $seconds = $elapsedSeconds % 60;
+
+                        $lama_waktu = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    } else {
+                        $lama_waktu = '00:00:00';
+                    }
+                }
+
+                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+
+                // Initialize default per-minute pricing
+                $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+
+                if (in_array($no_meja, [1, 2])) {
+                    // Harga khusus meja 1 dan 2 (Rp 60.000 per jam)
+                    $mejatotal = ($total_minutes / 60) * 50000;
+                } else {
+                    // Hitung harga berdasarkan per menit atau paket
+                    $mejatotal = $total_minutes * $harga_per_menit;
+            
+                    // Iterasi melalui paket untuk mendapatkan harga terbaik
+                    $paket = Paket::orderBy('jam', 'asc')->get();
+                    $best_price = null; // Default to calculated per-minute price
+                    foreach ($paket as $p) {
+                        // Convert package time ($p->jam) to minutes
+                        $package_minutes = (substr($p->jam, 0, 2) * 60) + substr($p->jam, 3, 2);
+                        
+                        // Check if the input time (total_minutes) exceeds or is equal to the package time
+                        if ($total_minutes == $package_minutes) {
+                            $best_price = $p->harga; // Update the best price to this package's price
+                        }
+                    }
+                    $mejatotal = $best_price !== null ? $best_price : $mejatotal;
+                }
+            }
+
+            // Calculate the total for all food items
+            $total_makanan = $makanan->flatMap(function($order) {
+                return $order->items;
+            })->sum(function($item) {
+                return $item->price * $item->quantity;
+            });
+
+            // Total biaya keseluruhan
+            $diskon = $meja_rental->diskon;
+            $totalmeja = $mejatotal - ($mejatotal * ( $diskon / 100));
+            $total = $totalmeja + $total_makanan;
+            $total = round($total);
+            $invoice->update([
+                "harga_table"=>$mejatotal,
+                "harga_cafe"=>$total_makanan
+            ]);
+            return view('invoice.struk', compact("invoice",'meja_rental', 'meja_rental2', 'no_meja', 'rental', 'lama_waktu', 'mejatotal', 'total', 'makanan',"tanggalmain", "diskon"));
+        } else {
+            return redirect()->back()->with('error', 'No rental found for the specified table.');
+        }
+    }
+
     public function status(Request $request)
     {
         try {

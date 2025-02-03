@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     })->name("index");
 
     Route::get('/print-receipt/{id_rental}', [BilliardController::class, 'print'])->name('print.receipt');
+    Route::get('/print-receiptrekap/{id_rental}', [BilliardController::class, 'printrekap'])->name('print.receiptrekap');
 
     Route::resource('bl', BilliardController::class);
    
