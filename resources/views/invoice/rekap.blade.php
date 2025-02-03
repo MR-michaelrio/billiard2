@@ -29,7 +29,7 @@
                             <td>{{ $p->created_at }}</td>
                             <td>
                                 <a href="{{ route('bl.showrekap', $p->id) }}" class="btn btn-primary">Detail</a>
-                                <a href="{{ route('print.receipt', $p->id_rental) }}" class="btn btn-primary">Print Struk</a>
+                                <a href="{{ route('print.receipt', $p->id_rental ?? 0) }}" class="btn btn-primary">Print Struk</a>
                             </td>
                         </tr>
                     @endforeach
