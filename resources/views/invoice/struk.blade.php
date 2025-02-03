@@ -157,33 +157,22 @@
 
     <!-- Optional Print Button for Testing -->
     <!-- Tombol untuk cetak pertama (Customer) -->
-<div class="no-print">
-    <button id="printCustomer" onclick="printReceipt(1)">Print (Customer)</button>
-    <button id="printCashier" onclick="printReceipt(2)" style="display:none;">Print (Kasir)</button>
-</div>
+    <div class="no-print">
+        <button onclick="window.print()">Print</button>
+    </div>
 
-<script>
-    let printCount = 0;
-
-    function printReceipt(type) {
-        printCount++;
-        window.print();
-    }
-
-    window.addEventListener('afterprint', function() {
-        const idtable = document.getElementById('data-idtable').textContent;
-        console.log('ID Table:', idtable); // Debugging
-
-        if (printCount === 1) {
-            // Sembunyikan tombol customer & tampilkan tombol kasir
-            document.getElementById('printCustomer').style.display = 'none';
-            document.getElementById('printCashier').style.display = 'block';
-        } else if (printCount === 2) {
-            // Jika sudah cetak dua kali, lakukan request update status
-            if (!idtable) {
+    <script>
+        // Automatically trigger printing when the page loads
+        // window.addEventListener('load', function() {
+        //     window.print(); // Print the receipt twice
+        // });
+        window.addEventListener('afterprint', function() {
+            const idtable = document.getElementById('data-idtable').textContent;
+            console.log('ID Table:', idtable); // For debugging
+            if(!idtable){
                 const redirectUrl = '{{ route("bl.index") }}';
                 window.location.href = redirectUrl;
-            } else {
+            }else{
                 fetch('{{ route("print.status") }}', {
                     method: 'POST',
                     headers: {
@@ -194,24 +183,21 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Response data:', data); // Debugging
+                    console.log('Response data:', data); // For debugging
                     if (data.success) {
-                        // Redirect jika sukses
+                        // Perform redirection if success
                         const redirectUrl = '{{ route("bl.index") }}';
                         window.location.href = redirectUrl;
                     } else {
-                        showAlert('Error', 'There was an error updating the status', 'error');
+                        showAlert('Error','There was an error updating the status','error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showAlert('Error', 'There was an error during the status update. Please check the console for more details.', 'error');
+                    showAlert('Error','There was an error during the status update. Please check the console for more details.','error');
                 });
             }
-        }
-    });
-</script>
-
+        });
 
    
 </body>
