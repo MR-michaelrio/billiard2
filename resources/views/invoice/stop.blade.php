@@ -80,7 +80,7 @@
                                 <tr>
                                     <th>Diskon:</th>
                                     <td>
-                                        <input type="text" name="diskon" id="diskon">
+                                        <input type="text" name="diskon" id="diskon" value="0" >
                                     </td>
                                 </tr>
                             </tbody>
