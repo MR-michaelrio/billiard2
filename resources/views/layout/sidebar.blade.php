@@ -77,7 +77,7 @@
             </ul>
           </li>
           @endif
-            <li class="nav-item menu-open">
+            <!-- <li class="nav-item menu-open">
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{route('rekap.bulan')}}" class="nav-link">
@@ -88,7 +88,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
             <li class="nav-item menu-open">
               <ul class="nav nav-treeview">
                 <li class="nav-item">
@@ -101,7 +101,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item menu-open">
+            <!-- <li class="nav-item menu-open">
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{route('member.index')}}" class="nav-link">
@@ -124,7 +124,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
             <li class="nav-item menu-open">
               <ul class="nav nav-treeview">
                 <li class="nav-item">
