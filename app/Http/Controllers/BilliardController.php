@@ -37,9 +37,9 @@ class BilliardController extends Controller
 
         if ($meja_rental) {
             // Make sure to use the correct id reference for Orders
-            $makanan = Order::where('id_table', $invoice->id_belanja) // Use `no_meja` or the correct reference
+            $makanan = Order::where('id_table', $invoice->id_belanja)
                             ->where('status', 'belum')
-                            ->with('items') // Eager load items
+                            ->with('items')
                             ->get();
 
             $idplayer = substr($meja_rental->id_player, 0, 1);
