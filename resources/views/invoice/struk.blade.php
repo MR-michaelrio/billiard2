@@ -181,7 +181,9 @@
                     },
                     body: JSON.stringify({ id_table: idtable })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                })
                 .then(data => {
                     console.log('Response data:', data); // For debugging
                     if (data.success) {
