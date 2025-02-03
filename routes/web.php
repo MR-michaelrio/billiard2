@@ -86,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('invoice/rekap', [BilliardController::class, 'rekapinvoice'])->name('bl.rekap');
     Route::get('invoice/showrekap/{id}', [BilliardController::class, 'showrekap'])->name('bl.showrekap');
     //member
