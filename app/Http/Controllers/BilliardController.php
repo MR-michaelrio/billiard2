@@ -438,7 +438,7 @@ class BilliardController extends Controller
                 'id_player' => $id_player,
                 'id_rental' => $id_rental,
                 'id_belanja' => $orderss,
-                'user_id' => "1"
+                'user_id' => 1
             ]);
             
 
