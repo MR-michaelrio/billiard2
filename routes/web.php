@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders2', [OrderController::class, 'store2'])->name('orders.store2');
+    Route::post('/orders3', [OrderController::class, 'store3'])->name('orders.store3');
     Route::get('/strukorder/{order_id}/{invoice_id}', [OrderController::class, 'struk'])->name('print.strukorder');
     Route::post('/print-receipt-status', [BilliardController::class, 'status'])->name('print.status');
 
