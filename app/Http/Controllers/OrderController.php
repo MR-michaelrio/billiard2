@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -111,6 +112,55 @@ class OrderController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function store3(Request $request)
+{
+    // Validasi data
+    $request->validate([
+        'id_table' => 'integer',
+        'items' => 'required|array',
+        'items.*.name' => 'required|string',
+        'items.*.quantity' => 'required|integer|min:1',
+        'items.*.price' => 'required|numeric|min:0',
+    ]);
+
+    // Buat order di database
+    $order = Order::create([
+        'id_table' => $request->id_table,
+        'status' => "belum"
+    ]);
+
+    foreach ($request->items as $item) {
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_name' => $item['name'],
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+            'metode' => "simpan"
+        ]);
+    }
+
+    // Kirim ke printer dapur via HTTP POST
+    try {
+        $printerResponse = Http::timeout(5)->post('http://192.168.1.100:3000/print', [
+            'meja' => $request->id_table,
+            'items' => collect($request->items)->map(function ($item) {
+                return [
+                    'nama' => $item['name'],
+                    'qty' => $item['quantity']
+                ];
+            })->toArray()
+        ]);
+
+        if (!$printerResponse->successful()) {
+            \Log::error('Gagal kirim ke printer', ['response' => $printerResponse->body()]);
+        }
+    } catch (\Exception $e) {
+        \Log::error('Error kirim ke printer: ' . $e->getMessage());
+    }
+
+    return response()->json(['success' => true]);
+}
 
     public function struk($order_id, $invoice_id){
         // return $order_id;

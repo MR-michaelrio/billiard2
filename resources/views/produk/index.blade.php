@@ -242,7 +242,7 @@
             document.getElementById('loading').style.display = 'flex';
 
             const idTable = document.getElementById('id_table').value;
-            fetch('{{ route("orders.store2") }}', {
+            fetch('{{ route("orders.store3") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
