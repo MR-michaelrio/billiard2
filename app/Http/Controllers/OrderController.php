@@ -142,7 +142,7 @@ class OrderController extends Controller
 
     // Kirim ke printer dapur via HTTP POST
     try {
-        $printerResponse = Http::timeout(5)->post('http://192.168.1.100:3000/print', [
+        $printerResponse = Http::timeout(5)->post('http://192.168.1.2:3000/print', [
             'meja' => $request->id_table,
             'items' => collect($request->items)->map(function ($item) {
                 return [
