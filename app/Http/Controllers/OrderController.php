@@ -142,15 +142,20 @@ class OrderController extends Controller
 
     // Kirim ke printer dapur via HTTP POST
     try {
-        $printerResponse = Http::timeout(5)->post('http://127.0.0.1:6000/print', [
-            'meja' => $request->id_table,
-            'items' => collect($request->items)->map(function ($item) {
-                return [
-                    'nama' => $item['name'],
-                    'qty' => $item['quantity']
-                ];
-            })->toArray()
-        ]);
+        $printerResponse = Http::timeout(5)
+    ->withHeaders([
+        'x-api-key' => 'secret123'  // Tambahkan header ini!
+    ])
+    ->post('http://127.0.0.1:6000/print', [
+        'meja' => $request->id_table,
+        'items' => collect($request->items)->map(function ($item) {
+            return [
+                'nama' => $item['name'],
+                'qty' => $item['quantity']
+            ];
+        })->toArray()
+    ]);
+
 
         if (!$printerResponse->successful()) {
             \Log::error('Gagal kirim ke printer', ['response' => $printerResponse->body()]);
