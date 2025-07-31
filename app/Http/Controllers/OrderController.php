@@ -125,7 +125,7 @@ class OrderController extends Controller
         'items.*.price' => 'required|numeric|min:0',
     ]);
     $nomor_meja = Rental::where("id",$request->id_table)->first();
-    return $nomor_meja;
+    Log::error('Nomor meja', ['response' => $nomor_meja]);
 
     // Buat order di database
     $order = Order::create([
