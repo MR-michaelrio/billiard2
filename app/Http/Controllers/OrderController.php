@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Produk;
 use App\Models\Invoice;
+use App\Models\Rental;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -140,6 +141,8 @@ class OrderController extends Controller
         ]);
     }
 
+    $nomor_meja = Rental::where("id",$request->id_table)->get();
+
     // Kirim ke printer dapur via HTTP POST
     try {
         $printerResponse = Http::timeout(5)
@@ -147,7 +150,7 @@ class OrderController extends Controller
         'x-api-key' => 'secret123'  // Tambahkan header ini!
     ])
     ->post('http://127.0.0.1:6000/print', [
-        'meja' => $request->id_table,
+        'meja' => $nomor_meja->no_meja,
         'items' => collect($request->items)->map(function ($item) {
             return [
                 'nama' => $item['name'],
