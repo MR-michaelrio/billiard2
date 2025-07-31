@@ -124,6 +124,8 @@ class OrderController extends Controller
         'items.*.quantity' => 'required|integer|min:1',
         'items.*.price' => 'required|numeric|min:0',
     ]);
+    $nomor_meja = Rental::where("id",$request->id_table)->get();
+    return $nomor_meja;
 
     // Buat order di database
     $order = Order::create([
@@ -141,7 +143,7 @@ class OrderController extends Controller
         ]);
     }
 
-    $nomor_meja = Rental::where("id",$request->id_table)->get();
+    
 
     // Kirim ke printer dapur via HTTP POST
     try {
