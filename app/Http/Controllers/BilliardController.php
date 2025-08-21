@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http; // pastikan sudah diimport
 
 use App\Models\Meja;
 use App\Models\NonMember;
@@ -441,10 +442,19 @@ class BilliardController extends Controller
                 'user_id' => 1
             ]);
             
-
             // Hapus data meja rental
             $meja_rental->delete();
-
+            try {
+                Http::post("http://127.0.0.1:3000/emit", [
+                    "event" => "mejaUpdate",
+                    "data" => [
+                        "nomor_meja" => $validated['no_meja'],
+                        "status" => "closed"
+                    ]
+                ]);
+            } catch (\Exception $e) {
+                \Log::error("Gagal kirim ke WebSocket: " . $e->getMessage());
+            }
             // Kembalikan respons sukses dengan no_meja
             return response()->json(['success' => true, 'id_rental' => $id_rental, "id_table" => $validated['no_meja']]);
 
