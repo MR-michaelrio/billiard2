@@ -554,7 +554,7 @@ class BilliardController extends Controller
         $payload = [
             'nomor_meja' => $request->no_meja,
             'status' => 'lanjut',
-            'start_time' => $tanggalMain->toDateTimeString()
+            'start_time' => $b->waktu_mulai
         ];
         try {
             Http::post('http://127.0.0.1:3001/meja/update', $payload);
