@@ -596,8 +596,8 @@ class BilliardController extends Controller
         $payload = [
             'nomor_meja' => $request->no_meja,
             'status' => 'jalan',
-            'waktu_mulai' => $tanggalMain->toDateTimeString(),
-            'waktu_akhir' => $waktuAkhir->toDateTimeString(),
+            'waktu_mulai' => $b->waktu_mulai,
+            'waktu_akhir' => $waktuAkhir,
             'lama_waktu' => $request->lama_waktu
         ];
         try {
