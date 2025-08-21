@@ -445,7 +445,7 @@ class BilliardController extends Controller
             // Hapus data meja rental
             $meja_rental->delete();
             try {
-                Http::post("http://127.0.0.1:3000/emit", [
+                Http::post("http://127.0.0.1:3001/emit", [
                     "event" => "mejaUpdate",
                     "data" => [
                         "nomor_meja" => $validated['no_meja'],
