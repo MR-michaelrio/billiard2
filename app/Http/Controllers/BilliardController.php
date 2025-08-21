@@ -551,6 +551,16 @@ class BilliardController extends Controller
             'no_meja' => $request->no_meja,
             'status' => 'lanjut'
         ]);
+        $payload = [
+            'nomor_meja' => $request->no_meja,
+            'status' => 'lanjut',
+            'start_time' => $tanggalMain->toDateTimeString()
+        ];
+        try {
+            Http::post('http://127.0.0.1:3001/meja/update', $payload);
+        } catch (\Exception $e) {
+            \Log::error("Gagal kirim socket update: " . $e->getMessage());
+        }
         return redirect()->route('bl.index');
     }
     public function storenonmember2(Request $request)//perwaktu
@@ -583,6 +593,18 @@ class BilliardController extends Controller
             'waktu_akhir' => $waktuAkhir,
             'no_meja' => $request->no_meja
         ]);
+        $payload = [
+            'nomor_meja' => $request->no_meja,
+            'status' => 'jalan',
+            'waktu_mulai' => $tanggalMain->toDateTimeString(),
+            'waktu_akhir' => $waktuAkhir->toDateTimeString(),
+            'lama_waktu' => $request->lama_waktu
+        ];
+        try {
+            Http::post('http://127.0.0.1:3001/meja/update', $payload);
+        } catch (\Exception $e) {
+            \Log::error("Gagal kirim socket update: " . $e->getMessage());
+        }
         return redirect()->route('bl.index');
     }
     public function menunonmember($no_meja)
