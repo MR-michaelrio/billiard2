@@ -2,6 +2,7 @@
 @section('content')
 <div class="row">
     <a href="{{ route('bl.menunonmember', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Non Member</a>
+    <a href="{{ route('bl.tambahwaktu', $no_meja) }}" class="btn btn-block btn-primary btn-lg">Tambah Waktu</a>
     <button class="btn btn-block btn-primary btn-lg btn-stop" data-nomor-meja="{{ $no_meja }}">Stop</button>
 </div>
 

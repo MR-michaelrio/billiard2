@@ -50,108 +50,42 @@
         padding: 20px;
         font-size: 24px;
         padding:100px 10px;
-        /* display: flex; */
-        /* align-items: center; */
         justify-content: center;
-        /* position: absolute; */
-        /* top: 50%; */
     }
 </style>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <!-- <div class="row">
-                @for ($i = 0; $i < 3; $i++)
-                    <div class="col-2 col-lg-3">
-                        @foreach($meja_rental as $index => $mi)
-                            @if($index == $i)
-                                <div class="card">
-                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
-                                        <div class="card-body">
-                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
-                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
-                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
-                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                                                Meja {{ $mi['nomor_meja'] }}
-                                            </div>
-                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                @endfor
-            </div>
-            <div class="row">
-                @for ($i = 3; $i < 7; $i++)
-                    <div class="col-2 col-lg-3">
-                        @foreach($meja_rental as $index => $mi)
-                            @if($index == $i)
-                                <div class="card">
-                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
-                                        <div class="card-body">
-                                            <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
-                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
-                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
-                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                                                Meja {{ $mi['nomor_meja'] }}
-                                            </div>
-                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                @endfor
-            </div>
-            <div class="row">
-                @for ($i = 7; $i < 15; $i++)
-                    <div class="col-2 col-lg-3">
-                    @foreach($meja_rental as $index => $mi)
-                        @if($index == $i)
-                            <div class="card">
-                                <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
-                                    <div class="card-body">
-                                        <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
-                                            data-end-time="{{ $mi['waktu_akhir'] }}" 
-                                            data-start-time="{{ $mi['waktu_mulai'] }}" 
-                                            data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                                            Meja {{ $mi['nomor_meja'] }}
-                                        </div>
-                                        <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                                            {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @endif
-                    @endforeach
-                    </div>
-                @endfor
-            </div> -->
             <div class="row">
                 @for ($i = 0; $i < 12; $i++)
                     <div class="col-2 col-lg-3">
                         @foreach($meja_rental as $index => $mi)
                             @if($index == $i)
                                 <div class="card">
-                                    <a href="#" class="menu-link" data-nomor-meja="{{ $mi['nomor_meja'] }}" data-status="{{ $mi['status'] }}">
+                                    <a href="#" class="menu-link" 
+                                       data-nomor-meja="{{ $mi['nomor_meja'] }}" 
+                                       data-status="{{ $mi['status'] ?? 'kosong' }}">
                                         <div class="card-body">
                                             <div class="meja {{ $mi['status'] === 'lanjut' ? 'meja-yellow' : ($mi['waktu_akhir'] ? 'meja-yellow' : 'meja-green') }}" 
-                                                data-end-time="{{ $mi['waktu_akhir'] }}" 
-                                                data-start-time="{{ $mi['waktu_mulai'] }}" 
-                                                data-nomor-meja="{{ $mi['nomor_meja'] }}">
-                                                    Meja {{ $mi['nomor_meja'] }}
+                                                 data-end-time="{{ $mi['waktu_akhir'] }}" 
+                                                 data-start-time="{{ $mi['waktu_mulai'] }}" 
+                                                 data-nomor-meja="{{ $mi['nomor_meja'] }}">
+                                                Meja {{ $mi['nomor_meja'] }}
                                             </div>
-                                            <div class="{{ $mi['status'] === 'lanjut' ? 'stopwatch' : 'countdown' }}" data-status="{{ $mi['status'] }}">
-                                                {{ $mi['status'] === 'lanjut' ? '00:00:00' : ($mi['waktu_akhir'] ?? 'N/A') }}
+                                            <div class="{{ in_array($mi['status'], ['lanjut','tambahanlanjut']) ? 'stopwatch' : 'countdown' }}" 
+                                                 data-status="{{ $mi['status'] ?? 'kosong' }}">
+                                                @if($mi['status'] === 'lanjut' || $mi['status'] === 'tambahanlanjut')
+                                                    00:00:00
+                                                @elseif($mi['status'] === 'tambahan')
+                                                    {{ $mi['waktu_akhir'] ?? 'N/A' }}
+                                                @elseif($mi['status'] === 'selesai')
+                                                    00:00:00
+                                                @elseif(empty($mi['status']) || $mi['status'] === 'kosong')
+                                                    {{ $mi['waktu_akhir'] ?? 'N/A' }}
+                                                @else
+                                                    N/A
+                                                @endif
                                             </div>
                                         </div>
                                     </a>
@@ -177,99 +111,74 @@
                 const status = this.getAttribute('data-status');
                 let lamaMain = '00:00:00';
 
-                if (status === 'lanjut') {
-                    // Get the current stopwatch time from the displayed text
+                if (status === 'lanjut' || status === 'tambahanlanjut') {
                     lamaMain = this.querySelector('.stopwatch').innerText;
                 }
 
-                // Redirect to the menu page with nomor_meja and lama_main as query parameters
                 window.location.href = `/bl/menu/${nomorMeja}?lama_main=${lamaMain}`;
             });
         });
     });
 
+    // --- COUNTDOWN ---
     function startCountdown(element, endTime) {
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const endTimeMillis = new Date(endTime).getTime();
-            const timeRemaining = endTimeMillis - now;
-
-            if (timeRemaining <= 0) {
-                element.querySelector('.countdown').innerHTML = "00:00:00";
-                element.querySelector('.meja').classList.remove('meja-yellow');
-                element.querySelector('.meja').classList.add('meja-red');
-                return;
-            }
-
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-            element.querySelector('.countdown').innerHTML =
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+    function parseDateTime(dateTimeStr) {
+        if (!dateTimeStr) return new Date();
+        return new Date(dateTimeStr.replace(' ', 'T'));
     }
 
-    // function startStopwatch(element, startTime) {
-    //     const stopwatchKey = `stopwatch_${element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja')}`;
-    //     const start = startTime || new Date().getTime();
-
-    //     if (!startTime) {
-    //         localStorage.setItem(stopwatchKey, start);
-    //     }
-
-    //     element.querySelector('.meja').classList.remove('meja-green');
-    //     element.querySelector('.meja').classList.add('meja-yellow');
-
-    //     function updateStopwatch() {
-    //         const now = new Date().getTime();
-    //         const elapsed = now - start;
-
-    //         const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    //         const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-    //         const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
-
-    //         element.querySelector('.stopwatch').innerHTML =
-    //             `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    //     }
-
-    //     updateStopwatch();
-    //     setInterval(updateStopwatch, 1000);
-    // }
-    function startStopwatch(element, startTime) {
-    const stopwatchKey = `stopwatch_${element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja')}`;
-    const start = startTime ? new Date(startTime).getTime() : new Date().getTime(); // Use database startTime if available
-
-    if (!startTime) {
-        localStorage.setItem(stopwatchKey, start);
-    }
-
-    element.querySelector('.meja').classList.remove('meja-green');
+    // Tambahkan class kuning saat countdown dimulai
+    element.querySelector('.meja').classList.remove('meja-green', 'meja-red');
     element.querySelector('.meja').classList.add('meja-yellow');
 
-    function updateStopwatch() {
+    function updateCountdown() {
         const now = new Date().getTime();
-        const elapsed = now - start; // Calculate elapsed time from start time
+        const endTimeMillis = parseDateTime(endTime).getTime();
+        const timeRemaining = endTimeMillis - now;
 
-        const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        if (timeRemaining <= 0) {
+            element.querySelector('.countdown').innerHTML = "00:00:00";
+            element.querySelector('.meja').classList.remove('meja-green', 'meja-yellow');
+            element.querySelector('.meja').classList.add('meja-red');
+            return;
+        }
 
-        element.querySelector('.stopwatch').innerHTML =
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        element.querySelector('.countdown').innerHTML =
             `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    updateStopwatch();
-    setInterval(updateStopwatch, 1000);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 }
 
-    function resetStopwatch(noMeja) {
-        const stopwatchKey = `stopwatch_${noMeja}`;
-        localStorage.removeItem(stopwatchKey);
+    // --- STOPWATCH ---
+    function startStopwatch(element, startTime) {
+        const start = startTime ? new Date(startTime.replace(' ', 'T')).getTime() : new Date().getTime();
+        element.querySelector('.meja').classList.remove('meja-green');
+        element.querySelector('.meja').classList.add('meja-yellow');
 
+        function updateStopwatch() {
+            const now = new Date().getTime();
+            const elapsed = now - start;
+
+            const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+            element.querySelector('.stopwatch').innerHTML =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        updateStopwatch();
+        setInterval(updateStopwatch, 1000);
+    }
+
+    // --- RESET STOPWATCH ---
+    function resetStopwatch(noMeja) {
         const element = document.querySelector(`.meja[data-nomor-meja="${noMeja}"]`);
         if (element) {
             const stopwatchElement = element.closest('.card-body').querySelector('.stopwatch');
@@ -281,42 +190,56 @@
         }
     }
 
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const timerElements = document.querySelectorAll('.countdown, .stopwatch');
-    //     timerElements.forEach(element => {
-    //         const status = element.getAttribute('data-status');
-    //         const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
-
-    //         if (status === 'lanjut') {
-    //             const stopwatchKey = `stopwatch_${nomorMeja}`;
-    //             const startTime = localStorage.getItem(stopwatchKey);
-    //             startStopwatch(element.closest('.card-body'), startTime);
-    //         } else {
-    //             const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
-    //             if (endTimeString) {
-    //                 startCountdown(element.closest('.card-body'), endTimeString);
-    //             }
-    //         }
-    //     });
-    // });
+    // --- INIT TIMER BERDASARKAN STATUS ---
     document.addEventListener('DOMContentLoaded', function () {
-    const timerElements = document.querySelectorAll('.countdown, .stopwatch');
-    timerElements.forEach(element => {
-        const status = element.getAttribute('data-status');
-        const nomorMeja = element.closest('.card-body').querySelector('.meja').getAttribute('data-nomor-meja');
+        const timerElements = document.querySelectorAll('.countdown, .stopwatch');
 
-        if (status === 'lanjut') {
-            const startTime = element.closest('.card-body').querySelector('.meja').getAttribute('data-start-time');
-            startStopwatch(element.closest('.card-body'), startTime); // Pass the database start time to the stopwatch
-        } else {
-            const endTimeString = element.closest('.card-body').querySelector('.meja').getAttribute('data-end-time');
-            if (endTimeString) {
-                startCountdown(element.closest('.card-body'), endTimeString);
+        timerElements.forEach(element => {
+            const status = element.getAttribute('data-status') || 'kosong';
+            const cardBody = element.closest('.card-body');
+            const meja = cardBody.querySelector('.meja');
+            const startTime = meja.getAttribute('data-start-time');
+            const endTimeString = meja.getAttribute('data-end-time');
+            console.log("endTimeString",endTimeString);
+            meja.classList.remove('meja-green', 'meja-yellow', 'meja-red');
+
+            switch (status) {
+                case 'baru':
+                    if (endTimeString) {
+                        startCountdown(cardBody, endTimeString);
+                    } else {
+                        element.innerHTML = "00:00:00";
+                        meja.classList.add('meja-green');
+                    }
+                    break;
+
+                case 'lanjut':
+                    startStopwatch(cardBody, startTime);
+                    break;
+
+                case 'tambahan':
+                    if (endTimeString) {
+                        startCountdown(cardBody, endTimeString);
+                    }
+                    break;
+
+                case 'selesai':
+                    element.innerHTML = "00:00:00";
+                    meja.classList.add('meja-red');
+                    break;
+
+                case 'tambahanlanjut':
+                    startStopwatch(cardBody, startTime);
+                    break;
+
+                default:
+                    element.innerHTML = "N/A";
+                    meja.classList.add('meja-green');
             }
-        }
+        });
     });
-});
 
+    // --- HANDLE RESPONSE ---
     function handleSuccessResponse(data) {
         if (data.success) {
             resetStopwatch(data.no_meja);

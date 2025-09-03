@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('bl/nonmemberperwaktu/{id}', [BilliardController::class, 'nonmemberperwaktu'])->name('bl.nonmemberperwaktu');
     Route::post('bl/nonmember/post', [BilliardController::class, 'storenonmember'])->name('bl.storenonmember');
     Route::post('bl/nonmember/post2', [BilliardController::class, 'storenonmember2'])->name('bl.storenonmember2');
+    Route::get('/tambahwaktu/{no_meja}', [BilliardController::class, 'tambahwaktu'])->name('bl.tambahwaktu');
 
     Route::get('/stop/{nomor_meja}', [BilliardController::class, 'stop'])->name('bl.stop');
 
