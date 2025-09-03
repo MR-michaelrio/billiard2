@@ -125,7 +125,7 @@ class OrderController extends Controller
         'items.*.price' => 'required|numeric|min:0',
     ]);
     $nomor_meja = Rental::where("id",$request->id_table)->first();
-    Log::error('Nomor meja', ['response' => $nomor_meja]);
+    Log::info('Nomor meja', ['response' => $nomor_meja]);
 
     // Buat order di database
     $order = Order::create([
@@ -144,7 +144,7 @@ class OrderController extends Controller
     }
 
     
-
+    Log::info('info', ['response' => $nomor_meja]);
     // Kirim ke printer dapur via HTTP POST
     try {
         $printerResponse = Http::timeout(5)
