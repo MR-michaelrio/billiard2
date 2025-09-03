@@ -41,9 +41,9 @@
                             @foreach($meja_rental as $r)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>Meja Billiard</td>
+                                    <td >Meja Billiard</td>
                                     <td>
-                                        <span id="lama_waktu_{{ $r->id }}">{{ $r->lama_waktu ?? '00:00:00' }}</span>
+                                        <span id="lama_waktu_{{ $r->id }}" >{{ $r->lama_waktu ?? $r->lama_waktu_hitung ?? '00:00:00' }}</span>
                                     </td>
                                     <td>{{ number_format($r->harga_per_rental, 0, ',', '.') }}</td>
                                 </tr>
@@ -90,14 +90,17 @@
             <div class="row no-print">
                 <div class="col-12">
                     @foreach($meja_rental->groupBy('no_meja') as $no_meja => $rentals)
+                        @php
+                            $firstRental = $rentals->first();
+                        @endphp
                         <button type="button" class="submit-button btn btn-success float-right ml-2" 
                                 data-metode="Cash" 
-                                data-meja="{{ $no_meja }}">
+                                data-meja="{{ $no_meja }}" data-rental="{{ $firstRental->id }}">
                             Cash Payment {{ $no_meja }}
                         </button>
                         <button type="button" class="submit-button btn btn-success float-right ml-2" 
                                 data-metode="Transfer" 
-                                data-meja="{{ $no_meja }}">
+                                data-meja="{{ $no_meja }}" data-rental="{{ $firstRental->id }}">
                             Transfer Payment {{ $no_meja }}
                         </button>
                     @endforeach
@@ -124,7 +127,7 @@ document.querySelectorAll('.submit-button').forEach(button => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu, metode: metode, diskon: diskon })
+            body: JSON.stringify({ no_meja: noMeja, lama_waktu: lamaWaktu, metode: metode, diskon: diskon, idrental:idRental })
         })
         .then(response => response.json())
         .then(data => {

@@ -56,6 +56,13 @@ class BilliardController extends Controller
         $total_rental_price = 0;
 
         foreach ($rentals as $rental) {
+            if (in_array($rental->status, ["lanjut", "tambahanlanjut"])) {
+                $lama_waktu = request()->query('lama_main', '00:00:00');
+
+            } else {
+                $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+            }
+
             $lama_waktu = $rental->lama_waktu ?? "00:00:00";
             list($hours, $minutes, $seconds) = sscanf($lama_waktu, "%d:%d:%d");
             $total_minutes = ($hours * 60) + $minutes + ($seconds / 60);
@@ -80,6 +87,7 @@ class BilliardController extends Controller
 
             $rental->harga_dihitung = round($meja_price, 0);
             $total_rental_price += $rental->harga_dihitung;
+            $rental->lama_waktu_hitung = $lama_waktu;
         }
 
         // Hitung total makanan
@@ -101,7 +109,6 @@ class BilliardController extends Controller
                 'harga_cafe'  => round($total_makanan, 0),
             ]);
         }
-    // dd($rentals);
         return view('invoice.struk', [
             'invoice'             => $invoice,
             'rentals'             => $rentals,
@@ -272,87 +279,85 @@ class BilliardController extends Controller
     }
 
     public function stop($no_meja)
-{
-    $rentals = Rental::where('no_meja', $no_meja)->orderBy('created_at', 'asc')->get();
-    $rental_count = $rentals->count();
+    {
+        $rentals = Rental::where('no_meja', $no_meja)->orderBy('created_at', 'asc')->get();
+        $rental_count = $rentals->count();
 
-    if ($rentals->isEmpty()) {
-        return abort(404);
-    }
-
-    $total_rental_minutes = 0;
-
-    // Ambil player dari rental pertama
-    $id_player = $rentals->first()->id_player;
-
-    // Ambil semua makanan untuk player ini (hanya sekali)
-    $makanan = Order::where('id_table', $id_player)
-        ->where('status', 'belum')
-        ->with('items')
-        ->get();
-
-    foreach ($rentals as $rental) {
-        // Hitung lama waktu sesuai status
-        if (in_array($rental->status, ["open", "lanjut", "tambahanlanjut"])) {
-            $mulai = Carbon::parse($rental->waktu_mulai);
-            $akhir = Carbon::now();
-            $lama_waktu = $mulai->diff($akhir)->format('%H:%I:%S');
-        } else {
-            $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+        if ($rentals->isEmpty()) {
+            return abort(404);
         }
 
-        // Konversi ke menit
-        list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-        $total_minutes = $hours * 60 + $minutes + $seconds / 60;
-        $total_rental_minutes += $total_minutes;
+        $total_rental_minutes = 0;
 
-        // Hitung harga
-        $hargarental = HargaRental::where('jenis', 'menit')->first();
-        $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+        // Ambil player dari rental pertama
+        $id_player = $rentals->first()->id_player;
 
-        if (in_array($no_meja, [1, 2])) {
-            $meja_price = ($total_minutes / 60) * 50000;
-        } else {
-            $meja_price = $total_minutes * $harga_per_menit;
+        // Ambil semua makanan untuk player ini (hanya sekali)
+        $makanan = Order::where('id_table', $id_player)
+            ->where('status', 'belum')
+            ->with('items')
+            ->get();
 
-            // Cek paket
-            $paket = Paket::orderBy('jam', 'asc')->get();
-            foreach ($paket as $p) {
-                if ($lama_waktu == $p->jam) {
-                    $meja_price = $p->harga;
-                    break;
+        foreach ($rentals as $rental) {
+            // Hitung lama waktu sesuai status
+            if (in_array($rental->status, ["lanjut", "tambahanlanjut"])) {
+                $lama_waktu = request()->query('lama_main', '00:00:00');
+
+            } else {
+                $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+            }
+            // Konversi ke menit
+            list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
+            $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+            $total_rental_minutes += $total_minutes;
+
+            // Hitung harga
+            $hargarental = HargaRental::where('jenis', 'menit')->first();
+            $harga_per_menit = $hargarental ? $hargarental->harga : 0;
+
+            if (in_array($no_meja, [1, 2])) {
+                $meja_price = ($total_minutes / 60) * 50000;
+            } else {
+                $meja_price = $total_minutes * $harga_per_menit;
+
+                // Cek paket
+                $paket = Paket::orderBy('jam', 'asc')->get();
+                foreach ($paket as $p) {
+                    if ($lama_waktu == $p->jam) {
+                        $meja_price = $p->harga;
+                        break;
+                    }
                 }
             }
+
+            // Simpan hasil ke model rental
+            $rental->harga_per_rental = round($meja_price, 0);
+            $rental->lama_waktu_hitung = $lama_waktu; // bisa ditampilkan di view
         }
 
-        // Simpan hasil ke model rental
-        $rental->harga_per_rental = round($meja_price, 0);
-        $rental->lama_waktu_hitung = $lama_waktu; // bisa ditampilkan di view
+        // Total makanan
+        $total_makanan = $makanan->flatMap(function ($order) {
+            return $order->items;
+        })->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+        // Total keseluruhan
+        $total_rental_price = $rentals->sum('harga_per_rental');
+        $total = round($total_rental_price + $total_makanan);
+
+        $meja_rental = $rentals;
+        // dd($meja_rental);
+        return view('invoice.stop', compact(
+            'meja_rental',
+            'rental_count',
+            'no_meja',
+            'makanan',
+            'total',
+            'total_rental_minutes',
+            'total_rental_price'
+        ));
     }
-
-    // Total makanan
-    $total_makanan = $makanan->flatMap(function ($order) {
-        return $order->items;
-    })->sum(function ($item) {
-        return $item->price * $item->quantity;
-    });
-
-    // Total keseluruhan
-    $total_rental_price = $rentals->sum('harga_per_rental');
-    $total = round($total_rental_price + $total_makanan);
-
-    $meja_rental = $rentals;
-
-    return view('invoice.stop', compact(
-        'meja_rental',
-        'rental_count',
-        'no_meja',
-        'makanan',
-        'total',
-        'total_rental_minutes',
-        'total_rental_price'
-    ));
-}
 
 
     public function bayar(Request $request)
@@ -361,7 +366,7 @@ class BilliardController extends Controller
             $no_meja = $request->input('no_meja', '');
             $metode = $request->input('metode', '');
             $diskon = $request->input('diskon', '0');
-
+            $lama_waktu = $request->input('lama_waktu', '');
             // Ambil semua rental di meja ini
             $rentals = Rental::where('no_meja', $no_meja)
                 ->orderBy('created_at', 'asc')
@@ -376,10 +381,6 @@ class BilliardController extends Controller
 
             // ====== Hitung total harga table (sama seperti stop) ======
             foreach ($rentals as $rental) {
-                // Ambil lama_waktu untuk rental ini
-                $lama_waktu = ($rental->status == "lanjut" || $rental->status == "tambahanlanjut")
-                                ? request()->query('lama_main', '00:00:00')
-                                : $rental->lama_waktu;
 
                 list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
                 $total_minutes = $hours * 60 + $minutes + $seconds / 60;
@@ -413,7 +414,7 @@ class BilliardController extends Controller
                     'id_rental'   => $id_rental,
                     'lama_waktu'  => $lama_waktu,
                     'waktu_mulai' => $rental->waktu_mulai,
-                    'waktu_akhir' => $rental->waktu_akhir ?? now(),
+                    'waktu_akhir' => $rental->waktu_akhir ?? now("Asia/Jakarta"),
                     'no_meja'     => $rental->no_meja,
                     'metode'      => $metode,
                     'diskon'      => $diskon,
@@ -482,6 +483,7 @@ class BilliardController extends Controller
                 'harga_table' => round($total_rental_price, 0),
                 'harga_cafe' => round($total_makanan, 0),
                 'total' => round($total_rental_price + $total_makanan, 0),
+                "lama" => $lama_waktu
             ]);
 
         } catch (\Exception $e) {
