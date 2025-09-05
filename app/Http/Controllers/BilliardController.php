@@ -367,6 +367,7 @@ class BilliardController extends Controller
             $metode = $request->input('metode', '');
             $diskon = $request->input('diskon', '0');
             $lama_waktu = $request->input('lama_waktu', '');
+
             // Ambil semua rental di meja ini
             $rentals = Rental::where('no_meja', $no_meja)
                 ->orderBy('created_at', 'asc')
@@ -381,11 +382,14 @@ class BilliardController extends Controller
 
             // ====== Hitung total harga table (sama seperti stop) ======
             foreach ($rentals as $rental) {
+                // Tentukan lama waktu berdasarkan status rental
+                $waktu_dipakai = ($rental->status === 'open') ? $lama_waktu : $rental->lama_waktu;
 
-                list($hours, $minutes, $seconds) = sscanf($lama_waktu, '%d:%d:%d');
-                $total_minutes = $hours * 60 + $minutes + $seconds / 60;
+                // Pecah jadi jam, menit, detik
+                list($hours, $minutes, $seconds) = sscanf($waktu_dipakai, '%d:%d:%d');
+                $total_minutes = ($hours * 60) + $minutes + ($seconds / 60);
 
-                // Hitung harga
+                // Hitung harga per menit
                 $hargarental = HargaRental::where('jenis', 'menit')->first();
                 $harga_per_menit = $hargarental ? $hargarental->harga : 0;
 
@@ -398,7 +402,7 @@ class BilliardController extends Controller
                     $paket = Paket::orderBy('jam', 'asc')->get();
                     $best_price = null;
                     foreach ($paket as $p) {
-                        if ($lama_waktu == $p->jam) {
+                        if ($waktu_dipakai == $p->jam) {
                             $best_price = $p->harga;
                             break;
                         }
@@ -412,7 +416,7 @@ class BilliardController extends Controller
                 // Simpan ke RentalInvoice
                 RentalInvoice::create([
                     'id_rental'   => $id_rental,
-                    'lama_waktu'  => $lama_waktu,
+                    'lama_waktu'  => $waktu_dipakai,
                     'waktu_mulai' => $rental->waktu_mulai,
                     'waktu_akhir' => $rental->waktu_akhir ?? now("Asia/Jakarta"),
                     'no_meja'     => $rental->no_meja,
@@ -485,6 +489,7 @@ class BilliardController extends Controller
                 'total' => round($total_rental_price + $total_makanan, 0),
                 "lama" => $lama_waktu
             ]);
+
 
         } catch (\Exception $e) {
             \Log::error('Error in bayar function:', [
