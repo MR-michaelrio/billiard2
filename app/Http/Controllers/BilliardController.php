@@ -383,8 +383,12 @@ class BilliardController extends Controller
             // ====== Hitung total harga table (sama seperti stop) ======
             foreach ($rentals as $rental) {
                 // Tentukan lama waktu berdasarkan status rental
-                $waktu_dipakai = ($rental->status === 'open') ? $lama_waktu : $rental->lama_waktu;
-
+                if (in_array($rental->status, ["lanjut", "tambahanlanjut"])) {
+                    $lama_waktu = request()->query('lama_main', '00:00:00');
+    
+                } else {
+                    $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+                }
                 // Pecah jadi jam, menit, detik
                 list($hours, $minutes, $seconds) = sscanf($waktu_dipakai, '%d:%d:%d');
                 $total_minutes = ($hours * 60) + $minutes + ($seconds / 60);
