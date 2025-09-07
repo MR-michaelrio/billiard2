@@ -384,10 +384,10 @@ class BilliardController extends Controller
             foreach ($rentals as $rental) {
                 // Tentukan lama waktu berdasarkan status rental
                 if (in_array($rental->status, ["lanjut", "tambahanlanjut"])) {
-                    $lama_waktu = request()->query('lama_main', '00:00:00');
+                    $waktu_dipakai = $lama_waktu;
     
                 } else {
-                    $lama_waktu = $rental->lama_waktu ?? '00:00:00';
+                    $waktu_dipakai = $rental->lama_waktu ?? '00:00:00';
                 }
                 // Pecah jadi jam, menit, detik
                 list($hours, $minutes, $seconds) = sscanf($waktu_dipakai, '%d:%d:%d');
