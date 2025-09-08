@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
         return view('index',compact('today_order','member','nonmember'));
     })->name("index");
 
+    Route::post('/delete-item/{id}', [ProdukController::class, 'deleteitem'])->name('deleteitem');
     Route::get('/print-receipt/{id_rental}', [BilliardController::class, 'print'])->name('print.receipt');
     Route::get('/print-receiptrekap/{id_rental}', [BilliardController::class, 'printrekap'])->name('print.receiptrekap');
 

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Cart;
 use App\Models\Rental;
+use App\Models\OrderItem;
+use App\Models\Order;
 class ProdukController extends Controller
 {
     /**
@@ -97,5 +99,15 @@ class ProdukController extends Controller
 
         $produk->each->delete();
         return redirect()->route('pr.stok');
+    }
+
+    public function deleteitem(Request $request,string $id)
+    {
+        //
+        $orderitem = OrderItem::where("id",$id)->first();
+        $order = Order::where("id",$orderitem->order_id)->first();
+        $rental = Rental::where("id_player", $order->id_table)->first();
+        $orderitem->delete();
+        return redirect()->route("bl.stop",$rental->no_meja . "?lama_main=".$request->lama_main );
     }
 }

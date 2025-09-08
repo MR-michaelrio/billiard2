@@ -34,6 +34,7 @@
                                 <th>Product</th>
                                 <th>QTY / Lama Waktu</th>
                                 <th>Subtotal</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,10 +53,17 @@
                             @foreach($makanan as $order)
                                 @foreach($order->items as $item)
                                     <tr>
-                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $item->id }}</td>
                                         <td>{{ $item->product_name }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>{{ number_format($item->price, 0, ',', '.') }}</td>
+                                        <td>
+                                            <form action="{{ route('deleteitem', $item->id) }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="lama_main" id="lama_main_delete">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -158,5 +166,11 @@ function resetStopwatch(noMeja) {
         element.classList.add('meja-green');
     }
 }
+// Ambil parameter dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const lamaMain = urlParams.get('lama_main'); // contoh hasil: "00:00:46"
+
+// Masukkan ke hidden input
+document.getElementById('lama_main_delete').value = lamaMain;
 </script>
 @endsection
